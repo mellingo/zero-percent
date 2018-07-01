@@ -1,20 +1,32 @@
 <script>
-    import Vue from "vue"
-    import Component from "vue-class-component"
-    import HelloComponent from "./components/HelloComponent.vue"
+    import FullPage from "vue-fullpage.js/src/FullPage.vue"
+    import fullPageMixin from 'vue-fullpage.js/src/fullPageMixin'
+    import Dataviz from "./components/Dataviz.vue"
+    import Header from "./components/Header.vue"
 
-    @Component({
+    export default {
         components: {
-            "hello-component": HelloComponent
+            "full-page": FullPage,
+            "v-dataviz": Dataviz,
+            "v-header": Header
         }
-    })
-    export default class App extends Vue {
-
     }
 </script>
 
 <template>
-    <div>
-        <hello-component name="World" />
-    </div>
+    <full-page>
+        <div class="section">
+           Hello
+        </div>
+        <div class="section">
+            <v-dataviz></v-dataviz>
+        </div>
+    </full-page>
 </template>
+
+<style lang="scss" scoped>
+    * {
+        margin: 0;
+        padding: 0;
+    }
+</style>
