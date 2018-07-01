@@ -5,6 +5,7 @@ const { VueLoaderPlugin } = require('vue-loader');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const mode = process.env.NODE_ENV === "dev"? "development":"production";
+const path = require('path');
 
 module.exports = {
     mode: mode,
@@ -42,12 +43,18 @@ module.exports = {
                     },
                     'sass-loader'
                 ]
+            },
+            {
+                test: /\.(jpg|png|svg|woff2?)$/,
+                loader: "file-loader"
             }
         ]
     },
     resolve: {
         alias: {
-            'vue$': 'vue/dist/vue.esm.js'
+            'vue$': 'vue/dist/vue.esm.js',
+            'theme': path.resolve(__dirname, 'src/theme'),
+            'static': path.resolve(__dirname, 'src/static')
         }
     },
     plugins: [
