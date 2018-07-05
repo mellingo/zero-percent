@@ -4,13 +4,15 @@
 
     @Component({})
     export default class Header extends Vue {
-
+        goDown(){
+            this.$emit("down");
+        }
     }
 </script>
 
 <template>
     <div class="section header">
-        Header
+        <button @click="goDown">Down</button>
     </div>
 </template>
 
