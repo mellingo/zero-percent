@@ -14,6 +14,7 @@
         currentSvg = null;
         index = 0;
         lastIndex = 0;
+        ready = false;
 
         mounted(){
             this.currentSvg = this.$el.getElementsByTagName("svg")[0];
@@ -21,33 +22,39 @@
             this.svg = this.currentSvg.getElementById("Calque_2");
             this.paths = Array.from(this.svg.getElementsByTagName("path"));
             this.reversedPaths = Array.from(this.paths).reverse();
+            setTimeout(() => {
+                this.ready = true;
+                this.launchAnimation(this.target);
+            }, 1500);
         }
 
         @Watch("target")
         launchAnimation(value){
-            if (this.previous === 100) {
-                this.vanishing = this.previous > this.target;
-                this.index = Math.round(this.paths.length * (this.target*0.01));
-                for (let i = 0; i < this.paths.length - this.index; i++){
-                    setTimeout(() => {this.animation(this.paths[i])}, 50*i)
-                }
-            } else {
-                this.lastIndex = this.index;
-                this.index = Math.round(this.paths.length * (value*0.01));
-                this.vanishing = this.lastIndex > this.index;
-                if (this.vanishing) {
-                    let slicedPaths = this.reversedPaths.slice(this.index, this.lastIndex);
-                    let finalPaths = slicedPaths.reverse();
-                    for (let i = 0; i < finalPaths.length; i++){
-                        setTimeout(() => {this.animation(finalPaths[i])}, 50*i)
+            if (this.ready) {
+                if (this.previous === 100) {
+                    this.vanishing = this.previous > this.target;
+                    this.index = Math.round(this.paths.length * (this.target*0.01));
+                    for (let i = 0; i < this.paths.length - this.index; i++){
+                        setTimeout(() => {this.animation(this.paths[i])}, 50*i)
                     }
                 } else {
-                    for (let i = this.lastIndex; i < this.index; i++){
-                        setTimeout(() => {this.animation(this.reversedPaths[i])}, 50*i)
+                    this.lastIndex = this.index;
+                    this.index = Math.round(this.paths.length * (value*0.01));
+                    this.vanishing = this.lastIndex > this.index;
+                    if (this.vanishing) {
+                        let slicedPaths = this.reversedPaths.slice(this.index, this.lastIndex);
+                        let finalPaths = slicedPaths.reverse();
+                        for (let i = 0; i < finalPaths.length; i++){
+                            setTimeout(() => {this.animation(finalPaths[i])}, 50*i)
+                        }
+                    } else {
+                        for (let i = this.lastIndex; i < this.index; i++){
+                            setTimeout(() => {this.animation(this.reversedPaths[i])}, 50*i)
+                        }
                     }
                 }
+                this.previous = this.target;
             }
-            this.previous = this.target;
         }
 
         animation(path){
@@ -78,3 +85,7 @@
     <div class="country" v-html="this.country">
     </div>
 </template>
+
+<style lang="scss" scoped>
+
+</style>

@@ -1,19 +1,14 @@
 <script>
     import Vue from "vue"
     import Component from "vue-class-component"
+    import {Watch} from "vue-property-decorator"
 
-
-    @Component({})
+    @Component({
+        props: ["currentIndex", "colors"]
+    })
     export default class CountryNav extends Vue {
 
-        colors = {
-            brazil: {main: "#5ab1b6", light: "#f5f3c2"},
-            cameroun: {main: "#ef5259", light: "#f87636"},
-            france: {main: "#0048cc", light: "#0075f5"},
-            indonesia: {main: "#4728a6", light: "#683aa8"},
-            spain: {main: "#c02e1d", light: "#e80000"},
-            italy: {main: "#e8e33d", light: "#ffdb37"}
-        };
+        active = "Brazil";
 
         setBackgroundColor(event){
             let currentColor = this.colors[event.target.getAttribute("country")];
@@ -21,11 +16,31 @@
         }
 
         removeBackground(event){
-            event.target.style.backgroundImage = "none";
+            if (this.active !== event.target.getAttribute("country")) {
+                event.target.style.backgroundImage = "none";
+            }
+        }
+
+        removeAllBackground(){
+            Array.from(this.$el.children).map(element => {
+               element.style.backgroundImage = "none";
+            });
         }
 
         mounted(){
-            //console.log(this.colors);
+            Array.from(this.$el.children).map(element => {
+                if (element.getAttribute("country") === this.active){
+                    let currentColor = this.colors[element.getAttribute("country")];
+                    element.style.backgroundImage = `linear-gradient(${currentColor.main}, ${currentColor.light})`;
+                }
+            })
+        }
+
+        changeIndex(key){
+            this.removeAllBackground();
+            this.setBackgroundColor(event);
+            this.active = key;
+            this.$emit("changeIndex", key);
         }
     }
 </script>
@@ -34,7 +49,7 @@
     <ul class="country_nav">
         <li class="country_navItem" v-for="(color, key) in colors" :style="{borderColor: color.main}"
             @mouseover="setBackgroundColor" @mouseleave="removeBackground"
-            :key="key" :country="key"></li>
+            :key="key" :country="key" @click="changeIndex(key)"></li>
     </ul>
 </template>
 

@@ -2,22 +2,18 @@
     import Vue from "vue"
     import Component from "vue-class-component"
     import country from "./Countries/Country.vue"
-    import Brazil from "static/assets/1Brazil.svg"
-    import Italy from "static/assets/6Italy.svg"
-    import data from "static/assets/data.json"
+
     import {Watch} from "vue-property-decorator"
     import {TweenLite} from "gsap/TweenMax"
 
     @Component({
-        props: ["years"],
+        props: ["years", "svg", "name", "data", "color"],
         components: {
             "country": country,
         }
     })
     export default class CountrySlide extends Vue {
 
-        index = 0;
-        data = data;
         target = 100;
 
         tweenedNumber = 100;
@@ -26,17 +22,9 @@
             return this.tweenedNumber.toFixed(2)
         }
 
-        svg = [
-          Brazil, Italy
-        ];
-
-        countryName = [
-            "Brazil", "Italy"
-        ];
-
         @Watch("years")
         updateTarget(value){
-            this.target = this.data[this.countryName[this.index]][value];
+            this.target = this.data[value];
             TweenLite.to(this.$data, .5, {tweenedNumber: this.target});
         }
 
@@ -49,17 +37,23 @@
 <template>
     <div class="countrySlide">
         <div class="countrySlide_viz">
-            <country :country="svg[index]" :target="target" :animatedNumber="animatedNumber"></country>
+            <country :country="svg" :target="target" :animatedNumber="animatedNumber"></country>
             <div class="countrySlide_data">
-                <p>{{ animatedNumber }}</p>
+                <p class="countrySlide_percent" :style="{'backgroundImage': 'linear-gradient('+color.main+','+color.light+')'}">{{ animatedNumber }}%</p>
+                <p>Forest area</p>
             </div>
         </div>
-        <h2>Brazil</h2>
+        <h2>{{ name }}</h2>
     </div>
 </template>
 
 <style lang="scss" scoped>
     .countrySlide {
+        position: absolute;
+        left: 0;
+        top: 0;
+        right: 0;
+        bottom: 0;
         display: flex;
         width: 100%;
         color: white;
@@ -74,6 +68,13 @@
             width: 40%;
         }
 
+        &_percent {
+            background-clip: text;
+            color: transparent;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
         &_svgWrapper {
             width: 80%;
         }
@@ -81,6 +82,5 @@
         &_svg {
             //height: 80%;
         }
-
     }
 </style>
