@@ -11,7 +11,7 @@
     import {Watch} from "vue-property-decorator"
 
     @Component({
-        props: ["size"]
+        props: ["size", "isChrome"]
     })
     export default class Header extends Vue {
         one = One;
@@ -66,8 +66,11 @@
             <img :src="two" width="100%" style="z-index: 5">
         </div>
         <div class="header_mask" id="mask" style="z-index: 7">
-            <div @click="goDown" id="mouseIcon">
+            <div @click="goDown" id="mouseIcon" v-if="isChrome">
                 <div id="scroll"></div>
+            </div>
+            <div v-else>
+                <p> Please use Chrome to see this website :) </p>
             </div>
         </div>
     </div>

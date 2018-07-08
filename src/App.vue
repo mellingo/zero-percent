@@ -62,12 +62,9 @@
 
 <template>
     <div id="page" @wheel.prevent="fireScroll">
-        <div v-if="isChrome">
-            <v-header @down="scrollDown" :size="size"></v-header>
-            <v-dataviz></v-dataviz>
-        </div>
-        <div v-else class="placeholder">
-            <p>Please use Google Chrome to see this page :)</p>
+        <div>
+            <v-header @down="scrollDown" :size="size" :isChrome="isChrome"></v-header>
+            <v-dataviz v-if="isChrome"></v-dataviz>
         </div>
     </div>
 </template>
@@ -98,13 +95,5 @@
     }
     body {
         font-family: MarkBook;
-    }
-    .placeholder {
-        height: 100vh;
-        background-color: $dataviz-black;
-        color: white;
-        display: flex;
-        justify-content: center;
-        align-items: center;
     }
 </style>

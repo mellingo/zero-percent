@@ -41,7 +41,7 @@
         @Watch("years")
         updateTarget(value){
             if (this.target !== 100) {
-                this.diff = Math.round((this.target - this.data[value])*100)/100;
+                this.diff = Math.round((this.data[value] - this.target)*100)/100;
             }
             this.target = this.data[value];
             TweenLite.to(this.$data, .5, {tweenedNumber: this.target});
