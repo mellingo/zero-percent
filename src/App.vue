@@ -14,13 +14,16 @@
         isScrolling = false;
         isUp = true;
         isChrome = false;
+        size = null;
 
         mounted(){
             window.addEventListener('resize', this.handleResize);
+            this.size = window.width;
             this.isChrome = window.chrome && !window.opera;
         }
 
         handleResize(){
+            this.size = document.body.clientWidth;
             if (!this.isUp){
                 window.scrollTo(0, document.body.scrollHeight);
             } else {
@@ -60,7 +63,7 @@
 <template>
     <div id="page" @wheel.prevent="fireScroll">
         <div v-if="isChrome">
-            <v-header @down="scrollDown"></v-header>
+            <v-header @down="scrollDown" :size="size"></v-header>
             <v-dataviz></v-dataviz>
         </div>
         <div v-else class="placeholder">
