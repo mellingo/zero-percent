@@ -1,7 +1,5 @@
 <script>
     import Vue from "vue"
-    import Component from "vue-class-component"
-    import One from "static/assets/header/1.png"
     import Two from "static/assets/header/2.png"
     import Three from "static/assets/header/3.png"
     import Four from "static/assets/header/4.png"
@@ -14,7 +12,6 @@
         props: ["size", "isChrome"]
     })
     export default class Header extends Vue {
-        one = One;
         two = Two;
         three = Three;
         four = Four;
