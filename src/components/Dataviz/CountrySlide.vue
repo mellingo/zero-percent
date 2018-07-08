@@ -28,6 +28,10 @@
             TweenLite.to(this.$data, .5, {tweenedNumber: this.target});
         }
 
+        updateDisabled(value){
+            this.$emit("disabled", value);
+        }
+
         mounted(){
             this.updateTarget(this.years);
         }
@@ -37,7 +41,7 @@
 <template>
     <div class="countrySlide">
         <div class="countrySlide_viz">
-            <country :country="svg" :target="target" :animatedNumber="animatedNumber"></country>
+            <country :country="svg" :target="target" :animatedNumber="animatedNumber" @disabled="updateDisabled"></country>
             <div class="countrySlide_data">
                 <p class="countrySlide_percent" :style="{'backgroundImage': 'linear-gradient('+color.main+','+color.light+')'}">{{ animatedNumber }}%</p>
                 <p>Forest area</p>

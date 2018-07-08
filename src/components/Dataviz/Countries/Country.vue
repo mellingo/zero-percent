@@ -22,6 +22,7 @@
             this.svg = this.currentSvg.getElementById("Calque_2");
             this.paths = Array.from(this.svg.getElementsByTagName("path"));
             this.reversedPaths = Array.from(this.paths).reverse();
+            this.$emit("disabled", true);
             setTimeout(() => {
                 this.ready = true;
                 this.launchAnimation(this.target);
@@ -37,6 +38,9 @@
                     for (let i = 0; i < this.paths.length - this.index; i++){
                         setTimeout(() => {this.animation(this.paths[i])}, 50*i)
                     }
+                    setTimeout(() => {
+                        this.$emit("disabled", false);
+                    }, 50*(this.paths.length-this.index));
                 } else {
                     this.lastIndex = this.index;
                     this.index = Math.round(this.paths.length * (value*0.01));

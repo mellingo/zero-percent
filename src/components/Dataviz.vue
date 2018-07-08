@@ -29,6 +29,8 @@
             this.years = value;
         }
 
+        disabled = true;
+
         index = 0;
 
         data = data;
@@ -52,6 +54,10 @@
             "Brazil", "Cameroon", "France", "Indonesia", "Spain", "Italy"
         ];
 
+        updateDisabled(value){
+            this.disabled = value;
+        }
+
         changeIndex(value){
             let country = value.charAt(0).toUpperCase() + value.slice(1);
             let newIndex = this.countryNames.indexOf(country);
@@ -67,11 +73,11 @@
             <div class="dataviz_slider">
                 <transition :name="transition">
                     <v-country-slide :years="years" v-for="(img, key) in svg" :key="key" :svg="img"
-                                     :data="data[countryNames[key]]" :name="countryNames[key]" v-if="index === key" :color="colors[countryNames[key]]"></v-country-slide>
+                                     :data="data[countryNames[key]]" :name="countryNames[key]" v-if="index === key" :color="colors[countryNames[key]]" @disabled="updateDisabled"></v-country-slide>
                 </transition>
             </div>
             <nav class="dataviz_nav">
-                <v-year-range :years="years" @changeYear="updateYear"></v-year-range>
+                <v-year-range :years="years" @changeYear="updateYear" :disabled="disabled"></v-year-range>
                 <v-country-nav @changeIndex="changeIndex" :colors="colors"></v-country-nav>
             </nav>
         </div>

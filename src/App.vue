@@ -13,9 +13,11 @@
     export default class App extends Vue {
         isScrolling = false;
         isUp = true;
+        isChrome = false;
 
         mounted(){
-            window.addEventListener('resize', this.handleResize)
+            window.addEventListener('resize', this.handleResize);
+            this.isChrome = window.chrome && !window.opera;
         }
 
         handleResize(){
@@ -57,14 +59,28 @@
 
 <template>
     <div id="page" @wheel.prevent="fireScroll">
-        <v-header @down="scrollDown"></v-header>
-        <v-dataviz></v-dataviz>
+        <div v-if="isChrome">
+            <v-header @down="scrollDown"></v-header>
+            <v-dataviz></v-dataviz>
+        </div>
+        <div v-else class="placeholder">
+            <p>Please use Google Chrome to see this page :)</p>
+        </div>
     </div>
 </template>
 
 <style lang="scss">
+    @import "theme/variables.scss";
     * {
         margin: 0;
         padding: 0;
+    }
+    .placeholder {
+        height: 100vh;
+        background-color: $dataviz-black;
+        color: white;
+        display: flex;
+        justify-content: center;
+        align-items: center;
     }
 </style>
