@@ -23,17 +23,21 @@
         seven = Seven;
 
         ref = null;
+        header = null;
 
         @Watch("size")
         updateMask(value){
             let height = Math.round(value/1.7);
-            this.mask.style.height = `calc(100vh - ${height}px + 10vh)`;
+            let min = height/25;
+            this.mask.style.height = `calc(100vh - ${height}px + ${min}vh)`;
+            this.header.style.height = `calc(${height}px)`;
         }
-
 
         mounted(){
             this.ref = document.getElementById("one");
             this.mask = document.getElementById("mask");
+            this.header = document.getElementById("header");
+            this.img = this.header.getElementsByTagName("img");
             let value = document.body.clientWidth;
             this.updateMask(value);
         }
@@ -41,19 +45,27 @@
         goDown(){
             this.$emit("down");
         }
+
+        parallax(event){
+            let x = Math.round(event.clientX - (document.body.offsetWidth/2));
+            for(let i = 0; i < this.img.length; i++){
+                this.img[i].style.transform = `translateX(calc(${Math.round(x)*0.01}*${i}px))`
+            }
+        }
     }
 </script>
 
 <template>
-    <div class="section header">
-        <img :src="seven" width="100%">
-        <img :src="six" width="100%">
-        <img :src="five" width="100%">
-        <img :src="four" width="100%">
-        <img :src="three" width="100%">
-        <img :src="two" width="100%">
-        <img :src="one" width="100%" id="one">
-        <div class="header_mask" id="mask">
+    <div class="section">
+        <div class="header" id="header" @mousemove="parallax">
+            <img :src="seven" width="110%" style="z-index: 0">
+            <img :src="six" width="95%" style="z-index: 1">
+            <img :src="five" width="95%" style="z-index: 2">
+            <img :src="four" width="50%" id="logo" style="z-index: 3">
+            <img :src="three" width="100%" style="z-index: 4}">
+            <img :src="two" width="100%" style="z-index: 5">
+        </div>
+        <div class="header_mask" id="mask" style="z-index: 7">
             <div @click="goDown" id="mouseIcon">
                 <div id="scroll"></div>
             </div>
@@ -65,12 +77,20 @@
     @import "theme/variables.scss";
 
     .section {
-        background-color: yellow;
         height: 100vh;
     }
     .header {
         position: relative;
         overflow-x: hidden;
+        display: grid;
+        grid-template-columns: 100%;
+        grid-template-rows: 100%;
+        overflow-y: hidden;
+        max-height: 100vh;
+
+        #logo {
+            top: 5%;
+        }
 
         &_mask {
             position: absolute;
@@ -88,6 +108,8 @@
         >img {
             position: absolute;
             top: -20px;
+            align-self: center;
+            justify-self: center;
         }
     }
 
