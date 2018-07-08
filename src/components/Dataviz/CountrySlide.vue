@@ -53,6 +53,8 @@
 
         mounted(){
             this.updateTarget(this.years);
+            this.target = 100;
+            this.diff = 0;
         }
     }
 </script>
