@@ -3,6 +3,9 @@
     import Component from "vue-class-component"
     import country from "./Countries/Country.vue"
 
+    import FlecheDown from "static/assets/arrow/FlecheDown.svg"
+    import FlecheUp from "static/assets/arrow/FlecheUp.svg"
+
     import {Watch} from "vue-property-decorator"
     import {TweenLite} from "gsap/TweenMax"
 
@@ -14,16 +17,32 @@
     })
     export default class CountrySlide extends Vue {
 
+        flechedown = FlecheDown;
+        flecheup = FlecheUp;
+
         target = 100;
 
         tweenedNumber = 100;
+
+        diff = 0;
 
         get animatedNumber(){
             return this.tweenedNumber.toFixed(2)
         }
 
+        get arrowOrientation(){
+            if (this.diff < 0) {
+               return this.flechedown;
+            } else {
+                return this.flecheup;
+            }
+        }
+
         @Watch("years")
         updateTarget(value){
+            if (this.target !== 100) {
+                this.diff = Math.round((this.target - this.data[value])*100)/100;
+            }
             this.target = this.data[value];
             TweenLite.to(this.$data, .5, {tweenedNumber: this.target});
         }
@@ -43,6 +62,10 @@
         <div class="countrySlide_viz">
             <country :country="svg" :target="target" :animatedNumber="animatedNumber" @disabled="updateDisabled"></country>
             <div class="countrySlide_data">
+                <div class="countrySlide_diff" v-if="diff !== 0">
+                    <div v-html="this.arrowOrientation" class="countrySlide_arrow"></div>
+                    <p>{{ diff }}%</p>
+                </div>
                 <p class="countrySlide_percent" :style="{'backgroundImage': 'linear-gradient('+color.main+','+color.light+')'}">{{ animatedNumber }}%</p>
                 <p>Forest area</p>
             </div>
@@ -88,6 +111,14 @@
 
         &_data {
             font-size: calc(15px + 1.5vw);
+        }
+
+        &_diff {
+            display: flex;
+        }
+
+        &_arrow {
+            margin-right: 10px;
         }
     }
 </style>
