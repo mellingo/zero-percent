@@ -71,9 +71,30 @@
 
 <style lang="scss">
     @import "theme/variables.scss";
+
+    @font-face {
+        font-family: MarkBook;
+        src: url(./theme/fonts/MarkBook.otf);
+    }
+
+    @font-face {
+        font-family: MarkBook;
+        src: url(./theme/fonts/MarkBold.otf);
+        font-weight: bold;
+    }
+
+    @font-face {
+        font-family: MarkBook;
+        src: url(./theme/fonts/MarkLight.otf);
+        font-weight: lighter;
+    }
+
     * {
         margin: 0;
         padding: 0;
+    }
+    body {
+        font-family: MarkBook;
     }
     .placeholder {
         height: 100vh;

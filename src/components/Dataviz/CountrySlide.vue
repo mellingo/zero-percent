@@ -47,7 +47,7 @@
                 <p>Forest area</p>
             </div>
         </div>
-        <h2>{{ name }}</h2>
+        <p>{{ name }}</p>
     </div>
 </template>
 
@@ -64,12 +64,14 @@
         align-items: center;
         justify-content: flex-end;
         flex-direction: column;
+        font-weight: bold;
+        font-size: calc(15px + 1.5vw);
 
         &_viz {
             display: flex;
             align-items: center;
             justify-content: space-around;
-            width: 40%;
+            width: 60%;
         }
 
         &_percent {
@@ -77,14 +79,15 @@
             color: transparent;
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
+            font-size: calc(20px + 4.5vw);
         }
 
         &_svgWrapper {
             width: 80%;
         }
 
-        &_svg {
-            //height: 80%;
+        &_data {
+            font-size: calc(15px + 1.5vw);
         }
     }
 </style>
