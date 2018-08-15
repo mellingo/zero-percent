@@ -7,6 +7,7 @@
     import Six from "static/assets/header/6.png"
     import Seven from "static/assets/header/7.png"
     import {Watch} from "vue-property-decorator"
+    import Component from "vue-class-component"
 
     @Component({
         props: ["size", "isChrome"]
